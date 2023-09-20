@@ -11,36 +11,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        val editTextOp1 = EditText(this)
-        val editTextOp2 = EditText(this)
-        val linearLayout = LinearLayout(this)
-        val button = Button(this)
-        button.setText("Soma")
-        val textViewDisplay = TextView(this)
-        textViewDisplay.text = "0"
+        val editTextOp1 = findViewById<EditText>(R.id.editTextOp1)
+        val editTextOp2 = findViewById<EditText>(R.id.editTextOp2)
+        val buttonSoma = findViewById<Button>(R.id.buttonSoma)
+        val textViewDisplay = findViewById<TextView>(R.id.textViewDisplay)
 
-        linearLayout.addView(editTextOp1)
-        linearLayout.addView(editTextOp2)
-        linearLayout.addView(button)
-        linearLayout.addView(textViewDisplay)
-
-        button.setOnClickListener {
-
+        buttonSoma.setOnClickListener {
             val op1 = editTextOp1.text.toString().toInt()
-            val op2 = editTextOp1.text.toString().toInt()
-
-            val resultado = soma(op1,op2)
-
-            textViewDisplay.text = resultado.toString()
+            val op2 = editTextOp2.text.toString().toInt()
+            val result = soma(op1,op2)
+            textViewDisplay.text = result.toString()
         }
-
-        setContentView(linearLayout)
-
     }
 
     fun soma(op1: Int, op2:Int) : Int {
         return op1 + op2
     }
-
 }
