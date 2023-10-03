@@ -8,19 +8,36 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
+    var calculatorBrain = CalculatorBrain()
+
     var textViewDisplay : TextView? = null
+    var userIsInTheMiddleOfIntroduction = false
 
-    var operation : String? = null
-    var operand : Double = 0.0
-
-    var onOperationPressed : (View)->Unit = {
-
-        operation?.let {
-            doOperation()
+    var currentDisplay : Double
+        get() = textViewDisplay?.text.toString().toDouble()
+        set(value) {
+            var displayText = ""
+            if (value - value.toInt() == 0.0) {
+                displayText = value.toInt().toString()
+            }else{
+                displayText = value.toString()
+            }
+            textViewDisplay?.setText(displayText)
         }
 
-        operation = (it as Button).text.toString()
-        operand = textViewDisplay?.text.toString().toDouble()
+    var onOperationPressed : (View)->Unit = {
+        calculatorBrain.operation?.let {
+            currentDisplay = calculatorBrain.doOperation(currentDisplay)
+        }
+
+        calculatorBrain.operation = when ((it as Button).text.toString()) {
+            "+" -> CalculatorBrain.Operation.SUM
+            "-" -> CalculatorBrain.Operation.SUBTRACTION
+            "*" -> CalculatorBrain.Operation.MULTIPLICATION
+            "/" -> CalculatorBrain.Operation.DIVISION
+            else -> null
+        }
+        calculatorBrain.accumulator = textViewDisplay?.text.toString().toDouble()
         userIsInTheMiddleOfIntroduction = false
 
     }
@@ -45,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         userIsInTheMiddleOfIntroduction = true
     }
 
-    var userIsInTheMiddleOfIntroduction = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +88,7 @@ class MainActivity : AppCompatActivity() {
         val buttonDivide   = findViewById<Button>(R.id.buttonDivide  )
 
         val buttonEqual   = findViewById<Button>(R.id.buttonEqual  )
+        val buttonAC      = findViewById<Button>(R.id.buttonAC     )
 
         button0.setOnClickListener(onDigitPressed)
         button1.setOnClickListener(onDigitPressed)
@@ -90,27 +108,18 @@ class MainActivity : AppCompatActivity() {
         buttonDivide.setOnClickListener(onOperationPressed)
 
         buttonEqual.setOnClickListener {
-            doOperation()
+            currentDisplay = calculatorBrain.doOperation(currentDisplay)
             userIsInTheMiddleOfIntroduction = false
+        }
+
+        buttonAC.setOnClickListener {
+            textViewDisplay?.text = "0"
+            userIsInTheMiddleOfIntroduction = false
+            calculatorBrain.accumulator = 0.0
+            calculatorBrain.operation = null
         }
     }
 
-    fun doOperation () {
-        val currentNum = textViewDisplay?.text.toString().toDouble()
-        val result = when (operation) {
-            "+" -> operand  + currentNum
-            "-" -> operand  - currentNum
-            "*" -> operand  * currentNum
-            "/" -> operand  / currentNum
-            else -> 0.0
-        }
-        var displayText = ""
-        if (result - result.toInt() == 0.0) {
-            displayText = result.toInt().toString()
-        }else{
-            displayText = result.toString()
-        }
-        textViewDisplay?.setText(displayText)
-    }
+
 
 }

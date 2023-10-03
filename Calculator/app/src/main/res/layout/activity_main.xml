@@ -19,12 +19,29 @@
         android:text="0"
         android:textAlignment="textEnd"
         android:textSize="48sp"
-        android:layout_weight="3"/>
+        android:layout_weight="2.5"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.75"
+        android:layout_weight="1.5"
+        android:weightSum="4">
+
+        <Button
+            android:id="@+id/buttonAC"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="AC"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
         android:weightSum="4">
 
         <Button
@@ -72,7 +89,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.75"
+        android:layout_weight="1.5"
         android:weightSum="4"
         >
 
@@ -120,7 +137,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.75"
+        android:layout_weight="1.5"
         android:weightSum="4"
         >
 
@@ -169,7 +186,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.75"
+        android:layout_weight="1.5"
         android:weightSum="4">
 
         <Button
