@@ -1,5 +1,6 @@
 package ipca.utility.calculator
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -90,6 +91,10 @@ class MainActivity : AppCompatActivity() {
         val buttonEqual   = findViewById<Button>(R.id.buttonEqual  )
         val buttonAC      = findViewById<Button>(R.id.buttonAC     )
 
+        val buttonAbout      = findViewById<Button>(R.id.buttonAbout     )
+
+
+
         button0.setOnClickListener(onDigitPressed)
         button1.setOnClickListener(onDigitPressed)
         button2.setOnClickListener(onDigitPressed)
@@ -117,6 +122,11 @@ class MainActivity : AppCompatActivity() {
             userIsInTheMiddleOfIntroduction = false
             calculatorBrain.accumulator = 0.0
             calculatorBrain.operation = null
+        }
+
+        buttonAbout.setOnClickListener {
+            val intent = Intent(this, AboutActivity::class.java)
+            startActivity(intent)
         }
     }
 
