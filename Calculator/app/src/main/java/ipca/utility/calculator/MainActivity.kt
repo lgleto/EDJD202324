@@ -9,6 +9,7 @@ import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
+    // model
     var calculatorBrain = CalculatorBrain()
 
     var textViewDisplay : TextView? = null
