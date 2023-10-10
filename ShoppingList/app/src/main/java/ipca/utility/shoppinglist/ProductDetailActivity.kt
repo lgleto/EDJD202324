@@ -20,6 +20,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityProductDetailBinding
 
+    var position : Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,9 +30,11 @@ class ProductDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         intent.extras?.let {
+            position = it.getInt(DATA_POSITION, -1)
             qtd = it.getInt(DATA_QTD)
             val name = it.getString(DATA_NAME)
             binding.editTextProductName.setText(name)
+
         }
 
         binding.buttonIncrement.setOnClickListener {
@@ -44,8 +47,9 @@ class ProductDetailActivity : AppCompatActivity() {
 
         binding.buttonDone.setOnClickListener {
             val intent = Intent()
-            intent.putExtra(DATA_NAME, qtd)
-            intent.putExtra(DATA_QTD , binding.editTextProductName.text.toString())
+            intent.putExtra(DATA_QTD, qtd)
+            intent.putExtra(DATA_NAME , binding.editTextProductName.text.toString())
+            intent.putExtra(DATA_POSITION ,position)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
@@ -55,6 +59,7 @@ class ProductDetailActivity : AppCompatActivity() {
     companion object {
         const val  DATA_NAME = "data_name"
         const val  DATA_QTD  = "data_qtd"
+        const val DATA_POSITION = "data_position"
     }
 
 

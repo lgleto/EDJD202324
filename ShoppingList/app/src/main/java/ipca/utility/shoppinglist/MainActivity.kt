@@ -30,9 +30,16 @@ class MainActivity : AppCompatActivity() {
             data?.let {
                 val qtd = it.extras?.getInt(ProductDetailActivity.DATA_QTD)
                 val productName = it.extras?.getString(ProductDetailActivity.DATA_NAME)
+                val position = it.extras?.getInt(ProductDetailActivity.DATA_POSITION)?:-1
                 println("Product:${qtd} ${productName}")
-                val newProduct = Product(productName,qtd?:0)
-                productList.add(newProduct)
+                if (position == -1) {
+                    val newProduct = Product(productName, qtd ?: 0)
+                    productList.add(newProduct)
+                }else{
+                    productList[position].name = productName
+                    productList[position].qtd = qtd?:0
+
+                }
                 productAdapter.notifyDataSetChanged()
             }
         }
@@ -78,6 +85,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity, ProductDetailActivity::class.java)
                 intent.putExtra(ProductDetailActivity.DATA_QTD, productList[position].qtd)
                 intent.putExtra(ProductDetailActivity.DATA_NAME, productList[position].name)
+                intent.putExtra(ProductDetailActivity.DATA_POSITION, position)
                 resultLauncher.launch(intent)
             }
 
