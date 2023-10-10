@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity() {
         if (it.resultCode == Activity.RESULT_OK) {
             val data = it.data
             data?.let {
-                val qtd = it.extras?.getInt("DATA_QTD")
-                val productName = it.extras?.getString("DATA_NAME")
+                val qtd = it.extras?.getInt(ProductDetailActivity.DATA_QTD)
+                val productName = it.extras?.getString(ProductDetailActivity.DATA_NAME)
                 println("Product:${qtd} ${productName}")
                 val newProduct = Product(productName,qtd?:0)
                 productList.add(newProduct)
@@ -73,6 +73,14 @@ class MainActivity : AppCompatActivity() {
             textViewProduct.text = productList[position].name
             textViewQty.text = "QTD: ${productList[position].qtd}"
             checkBox.isChecked = productList[position].isChecked
+
+            rootView.setOnClickListener{
+                val intent = Intent(this@MainActivity, ProductDetailActivity::class.java)
+                intent.putExtra(ProductDetailActivity.DATA_QTD, productList[position].qtd)
+                intent.putExtra(ProductDetailActivity.DATA_NAME, productList[position].name)
+                resultLauncher.launch(intent)
+            }
+
             return rootView
         }
 

@@ -23,8 +23,16 @@ class ProductDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        intent.extras?.let {
+            qtd = it.getInt(DATA_QTD)
+            val name = it.getString(DATA_NAME)
+            binding.editTextProductName.setText(name)
+        }
 
         binding.buttonIncrement.setOnClickListener {
             qtd += 1
@@ -36,12 +44,18 @@ class ProductDetailActivity : AppCompatActivity() {
 
         binding.buttonDone.setOnClickListener {
             val intent = Intent()
-            intent.putExtra("DATA_QTD", qtd)
-            intent.putExtra("DATA_NAME", binding.editTextProductName.text.toString())
+            intent.putExtra(DATA_NAME, qtd)
+            intent.putExtra(DATA_QTD , binding.editTextProductName.text.toString())
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
 
     }
+
+    companion object {
+        const val  DATA_NAME = "data_name"
+        const val  DATA_QTD  = "data_qtd"
+    }
+
 
 }
