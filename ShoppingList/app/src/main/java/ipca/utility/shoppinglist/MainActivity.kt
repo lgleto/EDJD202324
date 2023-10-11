@@ -12,15 +12,15 @@ import android.widget.CheckBox
 import android.widget.ListView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     // model
-    val productList = arrayListOf<Product>(
-        Product("Apples", 2),
-        Product("Oranges", 4),
-        Product("Strawberries", 20),
-    )
+    var productList : List<Product> = arrayListOf<Product>()
 
     val productAdapter = ProductListAdapter()
 
@@ -33,14 +33,28 @@ class MainActivity : AppCompatActivity() {
                 val position = it.extras?.getInt(ProductDetailActivity.DATA_POSITION)?:-1
                 println("Product:${qtd} ${productName}")
                 if (position == -1) {
-                    val newProduct = Product(productName, qtd ?: 0)
-                    productList.add(newProduct)
+                    val newProduct = Product(
+                        System.currentTimeMillis(),
+                        productName,
+                        qtd ?: 0)
+
+                    GlobalScope.launch (Dispatchers.IO) {
+                        AppDatabase.getDatabase(applicationContext)?.productDao()?.insert(newProduct)
+                    }
+
+
+
                 }else{
                     productList[position].name = productName
                     productList[position].qtd = qtd?:0
 
+                    GlobalScope.launch (Dispatchers.IO) {
+                        AppDatabase.getDatabase(applicationContext)?.productDao()
+                            ?.update(productList[position])
+                    }
+
                 }
-                productAdapter.notifyDataSetChanged()
+
             }
         }
     }
@@ -56,6 +70,15 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, ProductDetailActivity::class.java)
             resultLauncher.launch(intent)
         }
+
+        AppDatabase.getDatabase(applicationContext)?.
+            productDao()?.
+            getAll()?.
+            observe(this, Observer {
+                productList = it
+                productAdapter.notifyDataSetChanged()
+            })
+
     }
 
     inner class ProductListAdapter : BaseAdapter() {
@@ -80,6 +103,15 @@ class MainActivity : AppCompatActivity() {
             textViewProduct.text = productList[position].name
             textViewQty.text = "QTD: ${productList[position].qtd}"
             checkBox.isChecked = productList[position].isChecked
+
+            checkBox.setOnClickListener {
+                productList[position].isChecked = checkBox.isChecked
+
+                GlobalScope.launch (Dispatchers.IO) {
+                    AppDatabase.getDatabase(applicationContext)?.productDao()
+                        ?.update(productList[position])
+                }
+            }
 
             rootView.setOnClickListener{
                 val intent = Intent(this@MainActivity, ProductDetailActivity::class.java)
