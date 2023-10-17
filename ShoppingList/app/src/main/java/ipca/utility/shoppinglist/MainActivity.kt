@@ -41,9 +41,6 @@ class MainActivity : AppCompatActivity() {
                     GlobalScope.launch (Dispatchers.IO) {
                         AppDatabase.getDatabase(applicationContext)?.productDao()?.insert(newProduct)
                     }
-
-
-
                 }else{
                     productList[position].name = productName
                     productList[position].qtd = qtd?:0
@@ -52,9 +49,7 @@ class MainActivity : AppCompatActivity() {
                         AppDatabase.getDatabase(applicationContext)?.productDao()
                             ?.update(productList[position])
                     }
-
                 }
-
             }
         }
     }

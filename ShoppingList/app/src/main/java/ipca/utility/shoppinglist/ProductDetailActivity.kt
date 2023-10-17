@@ -17,14 +17,11 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         }
 
-
     private lateinit var binding : ActivityProductDetailBinding
 
     var position : Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         binding = ActivityProductDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
