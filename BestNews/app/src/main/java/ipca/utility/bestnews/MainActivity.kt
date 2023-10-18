@@ -1,5 +1,6 @@
 package ipca.utility.bestnews
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,6 +9,8 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -19,9 +22,7 @@ import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
-    var articles : MutableList<Article> = arrayListOf<Article>()
-
-
+    var articles : List<Article> = arrayListOf<Article>()
     val articlesAdapter = ArticleListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,38 +31,16 @@ class MainActivity : AppCompatActivity() {
         val listViewArticles = findViewById<ListView>(R.id.listViewArticles)
         listViewArticles.adapter = articlesAdapter
 
-        GlobalScope.launch (Dispatchers.IO){
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url("https://newsapi.org/v2/top-headlines?country=pt&apiKey=1765f87e4ebc40229e80fd0f75b6416c")
-                .build()
-
-            client.newCall(request).execute().use { response ->
-                response.body?.let {
-                    val result = it.string()
-                    val jsonResult = JSONObject(result)
-                    val status : String = jsonResult["status"] as String
-                    if (status == "ok" ){
-                        val articleJSONArray  = jsonResult["articles"] as JSONArray
-                        for ( index in 0..<articleJSONArray.length() ){
-                            val jsonArticle = articleJSONArray.getJSONObject(index)
-
-                            val article = Article.fromJson(jsonArticle)
-                            articles.add(article)
-                        }
-                        GlobalScope.launch (Dispatchers.Main){
-                            articlesAdapter.notifyDataSetChanged()
-                        }
-
-                    }
-
-                }?:run{
-                    println("no response")
-                }
+        Backend.fetchArticles(lifecycleScope,"sports" ) {
+            it?.let {articles ->
+                this.articles = articles
+                articlesAdapter.notifyDataSetChanged()
+            }?:run {
+                Toast.makeText(this@MainActivity,
+                    "No internet connection!",
+                    Toast.LENGTH_LONG).show()
             }
         }
-
-
     }
 
     inner class ArticleListAdapter : BaseAdapter() {
@@ -87,7 +66,22 @@ class MainActivity : AppCompatActivity() {
 
             textViewTitle.text = articles[position].title
             textViewDescription.text = articles[position].description
-            textViewDate.text = articles[position].publishedAt.toString()
+            textViewDate.text = articles[position].publishedAt.toShortDateTime()
+
+            articles[position].urlToImage?.let { url ->
+                Backend.fetchImage(lifecycleScope, url){ bitmap ->
+                    bitmap?.let {
+                        imageView.setImageBitmap(it)
+                    }
+                }
+            }
+            rootView.setOnClickListener {
+
+                val intent = Intent(this@MainActivity, ArticleDetailActivity::class.java)
+                intent.putExtra(ArticleDetailActivity.URL, articles[position].url )
+                startActivity(intent)
+            }
+
 
             return rootView
         }
