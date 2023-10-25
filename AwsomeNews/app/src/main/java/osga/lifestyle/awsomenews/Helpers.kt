@@ -1,4 +1,4 @@
-package ipca.utility.bestnews;
+package osga.lifestyle.awsomenews;
 
 import java.text.SimpleDateFormat
 import java.util.Date

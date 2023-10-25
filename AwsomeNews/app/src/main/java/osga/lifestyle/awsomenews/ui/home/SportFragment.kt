@@ -1,47 +1,60 @@
-package ipca.utility.bestnews
+package osga.lifestyle.awsomenews.ui.home
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONArray
-import org.json.JSONObject
-import java.util.Date
+import osga.lifestyle.awsomenews.Article
+import osga.lifestyle.awsomenews.Backend
+import osga.lifestyle.awsomenews.R
+import osga.lifestyle.awsomenews.databinding.FragmentSportBinding
+import osga.lifestyle.awsomenews.toShortDateTime
 
-class MainActivity : AppCompatActivity() {
+class SportFragment : Fragment() {
 
     var articles : List<Article> = arrayListOf<Article>()
     val articlesAdapter = ArticleListAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    private var _binding: FragmentSportBinding? = null
+    private val binding get() = _binding!!
 
-        val listViewArticles = findViewById<ListView>(R.id.listViewArticles)
-        listViewArticles.adapter = articlesAdapter
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSportBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.listViewArticles.adapter = articlesAdapter
 
         Backend.fetchArticles(lifecycleScope,"sports" ) {
             it?.let {articles ->
                 this.articles = articles
                 articlesAdapter.notifyDataSetChanged()
             }?:run {
-                Toast.makeText(this@MainActivity,
+                Toast.makeText(requireContext(),
                     "No internet connection!",
                     Toast.LENGTH_LONG).show()
             }
         }
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     inner class ArticleListAdapter : BaseAdapter() {
@@ -77,10 +90,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             rootView.setOnClickListener {
-
-                val intent = Intent(this@MainActivity, ArticleDetailActivity::class.java)
-                intent.putExtra(ArticleDetailActivity.URL, articles[position].url )
-                startActivity(intent)
+                //val intent = Intent(this@MainActivity, ArticleDetailActivity::class.java)
+                //intent.putExtra(ArticleDetailActivity.URL, articles[position].url )
+                //startActivity(intent)
             }
 
 
