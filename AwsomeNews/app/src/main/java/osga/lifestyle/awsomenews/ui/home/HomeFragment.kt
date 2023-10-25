@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import osga.lifestyle.awsomenews.Article
 import osga.lifestyle.awsomenews.Backend
 import osga.lifestyle.awsomenews.R
@@ -93,9 +94,9 @@ class HomeFragment : Fragment() {
                 }
             }
             rootView.setOnClickListener {
-                //val intent = Intent(this@MainActivity, ArticleDetailActivity::class.java)
-                //intent.putExtra(ArticleDetailActivity.URL, articles[position].url )
-                //startActivity(intent)
+                val bundle = Bundle()
+                bundle.putString("url", articles[position].url)
+                findNavController().navigate(R.id.action_navigation_home_to_articleDetailFragment, bundle)
             }
 
 

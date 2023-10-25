@@ -15,12 +15,12 @@
             app:destination="@id/articleDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/sportFragment"
+        android:id="@+id/navigation_sports"
         android:name="osga.lifestyle.awsomenews.ui.home.SportFragment"
         android:label="Sport"
         tools:layout="@layout/fragment_sport" >
         <action
-            android:id="@+id/action_sportFragment_to_articleDetailFragment"
+            android:id="@+id/action_navigation_sports_to_articleDetailFragment"
             app:destination="@id/articleDetailFragment" />
     </fragment>
     <fragment

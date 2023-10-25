@@ -14,11 +14,12 @@ class ArticleDetailFragment  : Fragment () {
     private var _binding : FragmentArticleDetailBinding? = null
     private val binding get() = _binding!!
 
-
+    var url = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        arguments?.let {
+            url = it.getString("url")?:""
+        }
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +38,7 @@ class ArticleDetailFragment  : Fragment () {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        binding.webView.loadUrl(url)
 
         var webViewClient = object : WebViewClient(){
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
