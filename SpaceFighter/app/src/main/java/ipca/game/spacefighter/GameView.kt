@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
@@ -23,7 +24,7 @@ class GameView : SurfaceView, Runnable {
         surfaceHolder = holder
         paint = Paint()
 
-        player = Player(context)
+        player = Player(context, width, height)
     }
 
     override fun run() {
@@ -64,6 +65,21 @@ class GameView : SurfaceView, Runnable {
     fun pause() {
         isPlaying = false
         gameThread?.join()
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        super.onTouchEvent(event)
+        when(event?.action){
+            MotionEvent.ACTION_DOWN -> {
+                player.isBoosting = true
+                return true
+            }
+            MotionEvent.ACTION_UP -> {
+                player.isBoosting = false
+                return true
+            }
+        }
+        return false
     }
 
 }
