@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.media.MediaPlayer
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -13,11 +14,16 @@ class GameView : SurfaceView, Runnable {
     var isPlaying = false
     var gameThread : Thread? = null
 
-    var player : Player
-
     var surfaceHolder : SurfaceHolder
     var paint : Paint
     var canvas : Canvas? = null
+
+    var player : Player
+    var stars = arrayListOf<Star>()
+    var enemies = arrayListOf<Enemy>()
+    var boom : Boom
+
+
 
     constructor(context: Context, width : Int, height: Int) : super(context) {
 
@@ -25,6 +31,14 @@ class GameView : SurfaceView, Runnable {
         paint = Paint()
 
         player = Player(context, width, height)
+        for ( i in 1..100){
+            stars.add(Star(context,width, height))
+        }
+        for ( i in 1..3){
+            enemies.add(Enemy(context,width, height))
+        }
+        boom = Boom(context, width, height)
+
     }
 
     override fun run() {
@@ -36,7 +50,26 @@ class GameView : SurfaceView, Runnable {
     }
 
     fun update(){
+        boom.x = -300f
+        boom.y = -300f
+
         player.update()
+        for (s in stars) {
+            s.update(player.speed)
+        }
+
+        for (e in enemies) {
+            e.update(player.speed)
+            if (e.detectCollision.intersect(player.detectCollision)){
+                boom.x = e.x
+                boom.y = e.y
+
+                e.x = -300.toFloat()
+
+                val explosionSound = MediaPlayer.create(context, R.raw.explosion)
+                explosionSound.start()
+            }
+        }
     }
 
     fun draw() {
@@ -46,6 +79,18 @@ class GameView : SurfaceView, Runnable {
             canvas?.drawColor(Color.BLACK)
 
             canvas?.drawBitmap(player.bitmap, player.x , player.y , paint)
+
+            paint.color = Color.WHITE
+            for (s in stars){
+                paint.strokeWidth = s.starWidth
+                canvas?.drawPoint(s.x.toFloat(),s.y.toFloat(),paint)
+            }
+
+            for (e in enemies){
+                canvas?.drawBitmap(e.bitmap, e.x , e.y , paint)
+            }
+
+            canvas?.drawBitmap(boom.bitmap, boom.x , boom.y , paint)
 
 
             surfaceHolder.unlockCanvasAndPost(canvas)
