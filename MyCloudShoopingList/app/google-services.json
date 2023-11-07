@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1049725587931",
+    "project_id": "mycloudshoppinglist",
+    "storage_bucket": "mycloudshoppinglist.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1049725587931:android:b59bcff11429e5614cd7fe",
+        "android_client_info": {
+          "package_name": "ipca.utility.mycloudshoopinglist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA1ZBPH35_62k9SBNgFV0zQG0ToznYfsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

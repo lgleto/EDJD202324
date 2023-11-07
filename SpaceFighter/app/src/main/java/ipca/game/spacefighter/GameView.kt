@@ -16,6 +16,7 @@ class GameView : SurfaceView, Runnable {
 
     var surfaceHolder : SurfaceHolder
     var paint : Paint
+    var paintTxt : Paint
     var canvas : Canvas? = null
 
     var player : Player
@@ -23,12 +24,16 @@ class GameView : SurfaceView, Runnable {
     var enemies = arrayListOf<Enemy>()
     var boom : Boom
 
-
+    var score = 0
 
     constructor(context: Context, width : Int, height: Int) : super(context) {
 
         surfaceHolder = holder
         paint = Paint()
+
+        paintTxt = Paint()
+        paintTxt.textSize = 156f
+        paintTxt.color = Color.GREEN
 
         player = Player(context, width, height)
         for ( i in 1..100){
@@ -68,6 +73,7 @@ class GameView : SurfaceView, Runnable {
 
                 val explosionSound = MediaPlayer.create(context, R.raw.explosion)
                 explosionSound.start()
+                score += 10
             }
         }
     }
@@ -92,7 +98,7 @@ class GameView : SurfaceView, Runnable {
 
             canvas?.drawBitmap(boom.bitmap, boom.x , boom.y , paint)
 
-
+            canvas?.drawText("Score:$score",10f, 200f, paintTxt)
             surfaceHolder.unlockCanvasAndPost(canvas)
         }
     }
