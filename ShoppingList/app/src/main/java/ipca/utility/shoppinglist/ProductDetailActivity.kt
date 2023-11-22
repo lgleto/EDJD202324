@@ -54,8 +54,8 @@ class ProductDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val  DATA_NAME = "data_name"
-        const val  DATA_QTD  = "data_qtd"
+        const val DATA_NAME = "data_name"
+        const val DATA_QTD  = "data_qtd"
         const val DATA_POSITION = "data_position"
     }
 

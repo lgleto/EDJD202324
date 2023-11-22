@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import ipca.utility.mycloudshoopinglist.R
 import ipca.utility.mycloudshoopinglist.databinding.FragmentHomeBinding
 import ipca.utility.mycloudshoopinglist.databinding.RowProductBinding
 import ipca.utility.mycloudshoopinglist.databinding.RowShoppingListBinding
@@ -62,6 +64,14 @@ class ProductListFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
 
+        binding.buttonAdd.setOnClickListener {
+           val bundle = Bundle()
+           bundle.putString("listId", docId)
+
+           findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment,bundle)
+
+
+        }
     }
 
     override fun onDestroyView() {
@@ -88,6 +98,13 @@ class ProductListFragment : Fragment() {
             rootView.textViewProductName.text = products[position].name
             rootView.textViewQty.text = "QTD: ${products[position].qtt}"
             rootView.checkBox.isChecked = products[position].isChecked
+
+            rootView.root.setOnClickListener {
+                //val bundle = Bundle()
+                //bundle.putString("listId", docId)
+//
+                //findNavController().navigate(R.id.action_productListFragment_to_productDetailFragment,bundle)
+            }
             return rootView.root
         }
 
