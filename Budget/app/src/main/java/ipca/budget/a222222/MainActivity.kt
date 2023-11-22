@@ -2,6 +2,7 @@ package ipca.budget.a222222
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -26,6 +27,8 @@ class MainActivity : AppCompatActivity() {
     )
 
     val adapter = BudgetAdapter()
+
+    var isBelow5FlagActive = false
 
     val resultLauncher =
         registerForActivityResult(ActivityResultContracts
@@ -64,6 +67,10 @@ class MainActivity : AppCompatActivity() {
                 result += b.value
             }
             Toast.makeText(this@MainActivity, "Total:$result", Toast.LENGTH_LONG).show()
+
+            isBelow5FlagActive = true
+            adapter.notifyDataSetChanged()
+
         }
     }
 
@@ -115,6 +122,15 @@ class MainActivity : AppCompatActivity() {
             textViewDescription.text = budgetItems[position].description
             textViewValue.text = budgetItems[position].value.toString()
             textViewDate.text = budgetItems[position].date.toString()
+
+            if (isBelow5FlagActive && budgetItems[position].value <= 5.0) {
+
+                textViewDescription.setTextColor(Color.RED)
+                rootView.setBackgroundColor(Color.GREEN)
+            }else{
+                textViewDescription.setTextColor(Color.BLACK)
+                rootView.setBackgroundColor(Color.WHITE)
+            }
 
             return rootView
         }
