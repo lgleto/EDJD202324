@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="ipca.utility.mycloudshoopinglist.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_productListFragment"
+            app:destination="@id/productListFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +26,12 @@
         android:name="ipca.utility.mycloudshoopinglist.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/productListFragment"
+        android:name="ipca.utility.mycloudshoopinglist.ui.home.ProductListFragment"
+        android:label="ProductListFragment" >
+        <argument
+            android:name="docId"
+            app:argType="string" />
+    </fragment>
 </navigation>
