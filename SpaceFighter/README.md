@@ -6,8 +6,6 @@ Summary
 
 Welcome to SpaceFighter, this project it's an demonstration of how to build a game using only the Android SDK, with the SurfaceViews.
 
-![App example](docs/mobile-app.png "App example")
-
 # SpaceFighterEDJD2223
 
 Welcome to SpaceFighterEDJD2223, an exciting space shooter game built with love and JavaScript!
@@ -154,11 +152,11 @@ class GameView : SurfaceView, Runnable {
 Discussion
 ----------
 
-Sure there are many way to develop games in Android, but this is the simpler and lighter way to do it. Have fun. 
+Sure there are many ways to develop games in Android, but this is the simpler and lighter way to do it. Have fun. 
 
 License
 -------
 
-Copyright 2020 Lourenço Gomes
+Copyright 2023 Lourenço Gomes
 
 Licensed under [MIT License](LICENSE)
