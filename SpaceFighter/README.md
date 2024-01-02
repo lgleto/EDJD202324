@@ -4,7 +4,7 @@ Space Fighter - Android
 Summary
 -------
 
-Welcome to SpaceFighter, this project it's an demonstration of how to build a game using only the Android SDK, with the SurfaceViews.
+Welcome to SpaceFighter, this project it's a demonstration of how to build a game using only the Android SDK, with the SurfaceViews.
 
 # SpaceFighterEDJD2223
 
