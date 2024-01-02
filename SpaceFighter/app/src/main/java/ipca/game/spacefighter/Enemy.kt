@@ -46,5 +46,4 @@ class Enemy {
         detectCollision.bottom = y.toInt() + bitmap.height
     }
 
-
 }
